@@ -9,6 +9,6 @@ import org.springframework.context.annotation.Configuration;
 public class MongoConfig {
     @Bean
     public MongoClient mongoClient() {
-        return MongoClients.create("mongodb://admin:admin@localhost:27017/?authSource=admin");
+        return MongoClients.create("mongodb://admin:****@localhost:27017/?authSource=admin");
     }
 }
