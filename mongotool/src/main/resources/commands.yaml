@@ -1,0 +1,13 @@
+run ollama 
+> exec (to get all models) 
+    ollama pull mistral
+    ollama pull gemma:2b
+    ollama pull phi
+    ollama pull codellama
+    
+docker network create mongo-net
+docker run -d --name mongo --network mongo-net -p 27017:27017 -db sample --collection airbnb --file listingsAndReviews.json --jsonArray -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=admin mongo
+docker run -d --name express --network mongo-net -p 8081:8081 -e ME_CONFIG_MONGODB_ADMINUSERNAME=admin -e ME_CONFIG_MONGODB_ADMINPASSWORD=admin -e ME_CONFIG_MONGODB_SERVER=mongo mongo-express
+docker cp listingsAndReviews.json mongo:/data.json (https://github.com/neelabalan/mongodb-sample-dataset)
+docker exec -it mongo mongoimport --username admin --password admin --authenticationDatabase admin --db sample_data --collection airbnb --file /data.json --jsonArray
+

@@ -1,0 +1,59 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.4.4'
+	id 'io.spring.dependency-management' version '1.1.7'
+	//JIB
+	id 'com.google.cloud.tools.jib' version '3.4.0'
+}
+
+group = 'com.dipak.mcpserver'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	//native mongo java drover
+	implementation 'org.mongodb:mongodb-driver-sync:5.2.1'
+	//langchain4j
+	implementation 'dev.langchain4j:langchain4j-core:0.25.0'
+	//ollaman integration
+	implementation 'dev.langchain4j:langchain4j-ollama:0.25.0'
+	//inmemory vector store
+//	implementation 'dev.langchain4j:langchain4j-vectorstore-inmemory:0.25.0'
+	//loggig slf4j api and simple
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+}
+
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+//JIB
+jib {
+	from {
+		image = 'eclipse-temurin:17-jdk'
+	}
+	to {
+		image = 'dipaksand/mcpmongotool'
+	}
+	container {
+		ports = ['8080']
+	}
+}
